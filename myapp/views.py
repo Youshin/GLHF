@@ -17,8 +17,7 @@ def index(request):
 	return render(request, 'index.html')
 
 
-def signup(request):
-    
+def signup(request): 
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -46,7 +45,27 @@ def profile(request):
     args = {'user' : request.user}
     return render(request, 'profile.html', args)
 
+def convertNameToAccountId(request,summonerName):
+    url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summonerName+api_key
+    r = requests.get(url)
+    data = r.json()
+    return render(request, 'myapp/mypage.html', { 'welcome_text': 'accountId: ' +
+        json.dumps(data['accountId']) })
 
+#def convertNameToSummonerId(request, summonerName):
+def convertNameToSummonerId(summonerName):
+    url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/"+summonerName+api_key
+    r = requests.get(url)
+    data = r.json()
+    return data['id']
+#    return render(request, 'myapp/mypage.html', { 'welcome_text': 'summonerId: ' + json.dumps(data['id']) })
+
+def getSummonerInfo(request, summonerName):
+    url =  "https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/"+str(convertNameToSummonerId(summonerName))+api_key
+    print (url)
+    r = requests.get(url)
+    data = r.json()
+    return render(request, 'info.html', { 'info': 'SummonerInfo: ' + json.dumps(data) })
 # 1
 # content_type="application/json"
 # json.dumps(user.as_json())

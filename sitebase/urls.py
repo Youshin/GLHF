@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
     url(r'^profile/$', core_views.profile, name='profile'),
+
+    url(r'^Info/(?P<summonerName>.+)', core_views.getSummonerInfo, name='Info'),
 ]
